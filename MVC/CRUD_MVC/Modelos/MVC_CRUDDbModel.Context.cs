@@ -27,10 +27,10 @@ namespace Modelos
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual dbSet<Estatus> Estatus { get; set; }
-        public virtual dbSet<Persona> Persona { get; set; }
-        public virtual dbSet<Persona_Tipo> Persona_Tipo { get; set; }
-        public virtual dbSet<vConsultaPersona> vConsultaPersona { get; set; }
+        public virtual DbSet<Estatus> Estatus { get; set; }
+        public virtual DbSet<Persona> Persona { get; set; }
+        public virtual DbSet<Persona_Tipo> Persona_Tipo { get; set; }
+        public virtual DbSet<vConsultaPersona> vConsultaPersona { get; set; }
     
         [DbFunction("CRUD_MVCEntities", "fncConsultaPersonalPorId")]
         public virtual IQueryable<fncConsultaPersonalPorId_Result> fncConsultaPersonalPorId(Nullable<int> id)

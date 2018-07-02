@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
@@ -64,7 +65,9 @@ namespace Modelos
             bool Result = false;
             try
             {
-             
+                EntitySet.Attach(toDelete);
+                EntitySet.Remove(toDelete);
+                Result = Context.SaveChanges() > 0;
             }
             catch (DbEntityValidationException ex)
             {
@@ -83,17 +86,99 @@ namespace Modelos
 
         public List<TEntity> Filter(Expression<Func<TEntity, bool>> criterio)
         {
-            throw new NotImplementedException();
+            List<TEntity> Resultado = new List<TEntity>();
+
+            try
+            {
+                Resultado = EntitySet.Where(criterio).ToList();
+
+            }
+            catch (DbEntityValidationException ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            catch (Exception ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            return Resultado;
         }
 
         public TEntity Retrieve(Expression<Func<TEntity, bool>> criterio)
         {
-            throw new NotImplementedException();
+            TEntity Resultado = null;
+            try
+            {
+                Resultado = EntitySet.FirstOrDefault(criterio);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            catch (Exception ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            return Resultado;
         }
 
         public bool Update(TEntity toUpdate)
         {
-            throw new NotImplementedException();
+            bool Resultado = false;
+            try
+            {
+                EntitySet.Attach(toUpdate);
+                Context.Entry<TEntity>(toUpdate).State = EntityState.Modified;
+                Resultado = Context.SaveChanges() > 0;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            catch (Exception ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            return Resultado;
+        }
+
+        public bool Update(Expression<Func<TEntity, bool>> criterio, string propertyName, object valor)
+        {
+            bool Resultado = false;
+            try
+            {
+                
+                Context.Entry<TEntity>(EntitySet.FirstOrDefault(criterio)).Property(propertyName).CurrentValue = valor;
+                Resultado = Context.SaveChanges() > 0;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            catch (Exception ex)
+            {
+                Exception?.Invoke(this, new ExceptionEventArgs() { InnerException = ex.InnerException, Message = ex.Message, Source = ex.Source, StackTrace = ex.StackTrace, TargetSite = ex.TargetSite });
+                this.EscribirEnArchivoLog(ex);
+
+            }
+            return Resultado;
         }
     }
+
 }
+   
+

@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dbSet.cs" />
     <Compile Include="Estatus.cs">
       <DependentUpon>MVC_CRUDDbModel.tt</DependentUpon>
     </Compile>
@@ -66,7 +65,6 @@
       <DependentUpon>MVC_CRUDDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="IRepositorio.cs" />
-    <Compile Include="IRepositorio1.cs" />
     <Compile Include="MVC_CRUDDbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
